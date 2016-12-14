@@ -1,12 +1,21 @@
+var speed;
+
+var img = new Image();   // Create new img element
+img.addEventListener("load", function() 
+{
+}, false);
+img.src = 'player.png'; // Set source path
 
 
 function Player(x, y , colour)
 {
 	this.x = x;
 	this.y = y;
-	this.colour = colour;
 	this.width = 100; //50
 	this.height = 100;
+	this.speed = 0;
+	this.targetLeft = false;
+	this.targetRight = false;
 }
 
 /**Drtaws a square
@@ -14,12 +23,12 @@ function Player(x, y , colour)
 * @return {number} 
 
 */
-Player.prototype.draw=function(ctx) 
-{
-	ctx.fillStyle = this.colour;
-	ctx.fillRect(this.x, this.y, this.width, this.height);
-	
-}
+Player.prototype.draw=function(ctx) {
+
+	//ctx.clearRect(0,0,canvas.width, canvas.height);
+	ctx.drawImage(img, this.x, this.y);	
+};
+
 
 function keyDownHandler(e) 
 {
@@ -46,6 +55,12 @@ function keyDownHandler(e)
  	app.player.draw(ctx);
 }
 
+Player.prototype.PlayerMove=function(e) 
+{
+	this.x += this.speed;
+}
+
+
 Player.prototype.CheckCollision = function(e)
 {
 	var collides = false;
@@ -62,3 +77,9 @@ Player.prototype.CheckCollision = function(e)
 
 	return collides;
 }
+
+
+
+
+
+
