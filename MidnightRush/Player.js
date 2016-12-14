@@ -7,19 +7,22 @@ img.addEventListener("load", function()
 img.src = 'player.png'; // Set source path
 
 
-function Player(x, y , colour){
+function Player(x, y , colour)
+{
 	this.x = x;
 	this.y = y;
-	this.width = 100;
+	this.width = 100; //50
 	this.height = 100;
 	this.speed = 0;
 	this.targetLeft = false;
 	this.targetRight = false;
 }
 
-/** Draws a square.
- * @param {var} ctx his param is for the canvas
- */
+/**Drtaws a square
+* @param {var} ctx - 
+* @return {number} 
+
+*/
 Player.prototype.draw=function(ctx) {
 
 	//ctx.clearRect(0,0,canvas.width, canvas.height);
@@ -27,10 +30,55 @@ Player.prototype.draw=function(ctx) {
 };
 
 
+function keyDownHandler(e) 
+{
+ 	if (e.keyCode == '38') 
+ 	{
+ 	   //up arrow
+ 	   app.player.y -= 10;
+ 	}
+ 	else if (e.keyCode == '40') 
+ 	{
+	   //down arrow
+	   app.player.y += 10;
+ 	}
+ 	else if (e.keyCode == '37') 
+ 	{
+ 	      //left arrow  
+ 	      app.player.x -= 10;   
+	}
+ 	else if (e.keyCode == '39') 
+ 	{
+ 	      //right arrow
+ 	      app.player.x += 10;
+ 	}
+ 	app.player.draw(ctx);
+}
+
 Player.prototype.PlayerMove=function(e) 
 {
 	this.x += this.speed;
 }
+
+
+Player.prototype.CheckCollision = function(e)
+{
+	var collides = false;
+	//console.log("Check Collision");
+
+	if((this.x < e.x + e.width) &&
+	   (this.x + this.width > e.x) &&
+	   (this.y + this.height > e.y) &&
+	   (this.y < e.y + e.height))
+	{
+		console.log("Successful Collision");
+		collides = true;
+	} 
+
+	return collides;
+}
+
+
 
 
 

@@ -1,3 +1,9 @@
+// array of points that the player can move between 
+var points = [];
+points[0] = 120;
+points[1] = 450;
+points[2] = 780; 
+
 // enemy array
 var enemies = [];
 
@@ -10,13 +16,11 @@ var randomWave;
 var timer = 0;
 var timerValue;
 
-// array of points that the player can move between 
-var points = [];
-points[0] = 120;
-points[1] = 450;
-points[2] = 780; 
 
-
+//var alive = true;
+var count = 100;
+var bulletAlive = false;
+var bulletMove = false;
 
 
 function Game(){
@@ -52,6 +56,8 @@ Game.prototype.init=function()
 	app.plyr.draw(ctx);
 
 	console.log('Initiliasing Player');	
+
+	bullet = new Bullet(xP + 25, yP + 5, rgb(255,255,255));
 }
 
 /*
@@ -132,6 +138,48 @@ Game.prototype.update=function()
 	console.log (app.plyr.targetLeft, "LEFT");
 	console.log (app.plyr.targetRight, "RIGHT");
 
+
+
+	ctx.clearRect(0,0,canvas.width, canvas.height);
+
+	if(alive === true)
+	{
+		if(app.player.CheckCollision(app.goal))
+		{
+			console.log("Just Checking");
+			alive = false;
+		}
+		app.goal.draw(ctx);
+	}
+
+	///////////////////////////
+	//Bullet
+	//////////////////////////
+	if(bulletAlive === true)
+	{
+		bullet.draw(ctx);
+
+		if(bullet.CheckBulletCollision(app.goal) || bullet.y <= 0)
+		{
+			console.log("Success");
+			bulletAlive = false;
+			bulletMove = false;
+			bullet.y = app.player.y + 5;
+			bullet.x = app.player.x + 25;
+		}
+	}
+
+	if(bulletAlive === false)
+	{
+		bullet.y = app.player.y + 5;
+		bullet.x = app.player.x + 25;
+	}
+
+	if(bulletMove === true)
+	{
+		bullet.y -= 10;
+	}
+
 	// draws player
 	app.plyr.draw(ctx);
 
@@ -189,6 +237,16 @@ function Waves()
 	}	
 }
 
+function levelComplete()
+{
+	ctx.save();
+	ctx.fillStyle = rgb(100,0,100);
+	ctx.font = 'italic 40pt Calibri';
+	ctx.textBaseline = "top";
+	ctx.fillText("Level Complete!",500,300);
+	ctx.restore();
+}
+
 
 /*function for rgb for convenience*/
 function rgb(r, g, b) { 
@@ -204,3 +262,4 @@ function clamp(value, min, max){
 	}
 	return Math.max(min, Math.min(value, max)); 
 }
+

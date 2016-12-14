@@ -2,9 +2,11 @@ app = [];
 
 var isTouch = 'ontouchstart' in window;
 
+
 function TouchTest(){
 	var ctx;
 }
+
 
 // used to detect a touch device
 TouchTest.prototype.is_touch_device=function()
@@ -17,7 +19,10 @@ TouchTest.prototype.onTouchStart=function(e)
 {
     touches = e.touches; 
    //print outs out the x and y co-ordinates
-    console.log(touches[0].clientX, touches[0].clientY);
+    console.log("CLICK");
+    console.log("X = " + touches[0].clientX,"Y = " + touches[0].clientY);
+  	bulletMove = true;
+  	bulletAlive = true;
 }
 
 
@@ -54,3 +59,4 @@ TouchTest.prototype.Move=function(e)
 		}
 	}	
 }
+
