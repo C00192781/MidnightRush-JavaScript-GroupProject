@@ -17,7 +17,7 @@ var timer = 0;
 var timerValue;
 
 
-//var alive = true;
+var alive = true;
 var count = 100;
 var bulletAlive = false;
 var bulletMove = false;
@@ -71,6 +71,36 @@ Game.prototype.update=function()
 
 	timer++;
 
+	
+
+
+	console.log(app.plyr.x, "player x pos");
+	
+	// this is what is used to move to player
+	app.plyr.PlayerMove();
+
+	//// FOR WHEN PLAYER IS MOVING LEFT
+	if (app.plyr.targetLeft == true)
+	{
+		if (app.plyr.x == points[0] || app.plyr.x == points[1] || app.plyr.x == points[2])
+		{
+			// moves to point[X] and the player is halted 
+			app.plyr.speed = 0;
+		}
+	}
+		
+	//// FOR WHEN PLAYER IS MOVING RIGHT
+	if (app.plyr.targetRight == true)
+	{
+		if (app.plyr.x == points[0] || app.plyr.x == points[1] || app.plyr.x == points[2])
+		{
+			// moves to point[X] and the player is halted 
+			app.plyr.speed = 0;
+		}
+	}
+
+
+
 	for (var i=0; i < enemies.length; i++)
 	{
 
@@ -107,42 +137,7 @@ Game.prototype.update=function()
 		enemies[i].draw(ctx);
 	}
 
-
-	console.log(app.plyr.x, "player x pos");
-	
-	// this is what is used to move to player
-	app.plyr.PlayerMove();
-
-	//// FOR WHEN PLAYER IS MOVING LEFT
-	if (app.plyr.targetLeft == true)
-	{
-		if (app.plyr.x == points[0] || app.plyr.x == points[1] || app.plyr.x == points[2])
-		{
-			// moves to point[X] and the player is halted 
-			app.plyr.speed = 0;
-		}
-	}
-		
-	//// FOR WHEN PLAYER IS MOVING RIGHT
-	if (app.plyr.targetRight == true)
-	{
-		if (app.plyr.x == points[0] || app.plyr.x == points[1] || app.plyr.x == points[2])
-		{
-			// moves to point[X] and the player is halted 
-			app.plyr.speed = 0;
-		}
-	}
-
-
-	console.log(app.plyr.speed, "speed");
-	console.log (app.plyr.targetLeft, "LEFT");
-	console.log (app.plyr.targetRight, "RIGHT");
-
-
-
-	ctx.clearRect(0,0,canvas.width, canvas.height);
-
-	if(alive === true)
+	/*if(alive === true)
 	{
 		if(app.player.CheckCollision(app.goal))
 		{
@@ -150,7 +145,7 @@ Game.prototype.update=function()
 			alive = false;
 		}
 		app.goal.draw(ctx);
-	}
+	}*/
 
 	///////////////////////////
 	//Bullet
@@ -159,20 +154,20 @@ Game.prototype.update=function()
 	{
 		bullet.draw(ctx);
 
-		if(bullet.CheckBulletCollision(app.goal) || bullet.y <= 0)
+		if(bullet.y <= 0)
 		{
 			console.log("Success");
 			bulletAlive = false;
 			bulletMove = false;
-			bullet.y = app.player.y + 5;
-			bullet.x = app.player.x + 25;
+			bullet.y = app.plyr.y + 5;
+			bullet.x = app.plyr.x + 25;
 		}
 	}
 
 	if(bulletAlive === false)
 	{
-		bullet.y = app.player.y + 5;
-		bullet.x = app.player.x + 25;
+		bullet.y = app.plyr.y + 5;
+		bullet.x = app.plyr.x + 25;
 	}
 
 	if(bulletMove === true)
