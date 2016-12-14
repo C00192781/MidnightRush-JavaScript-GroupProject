@@ -22,6 +22,12 @@ var count = 100;
 var bulletAlive = false;
 var bulletMove = false;
 
+var levelEnd = false;
+var gameOverTimer = 100;
+var hostage = [];
+var hostageCount = 3;
+var hAlive = true;
+
 
 function Game(){
 	
@@ -58,6 +64,30 @@ Game.prototype.init=function()
 	console.log('Initiliasing Player');	
 
 	bullet = new Bullet(xP + 25, yP + 5, rgb(255,255,255));
+
+
+	var hX = 100;
+	var hY = window.innerHeight * Math.abs(0.9); /*(800)*/
+
+
+	for(var i = 1; i < 4; i++)
+	{
+		if(i == 1)
+		{
+			hX = window.innerWidth * Math.abs(0.1)
+		}
+		else if(i == 2)
+		{
+			hX = window.innerWidth * Math.abs(0.45);
+		}
+		else if(i == 3)
+		{
+			hX = window.innerWidth * Math.abs(0.8);
+		}
+		hostage[i] = new Hostage(hX, hY, rgb(255,0,0));
+		console.log("Hostage Initialized");
+		hostage[i].hAlive = true;
+	}
 }
 
 /*
@@ -71,10 +101,37 @@ Game.prototype.update=function()
 
 	timer++;
 
-	
-
-
 	console.log(app.plyr.x, "player x pos");
+
+	Spawns();
+	Waves();
+
+	for (var i=0; i < enemies.length; i++)
+	{
+		// if the timer is greater than the timerValue from Waves()
+		if (timer >= timerValue)
+		{
+			if (enemies[i].enemyAlive == false)
+			{
+				timer = 0;
+
+				enemies[i] = new Enemy(x,y, rgb(255,255,255));
+				enemies[i].enemyAlive = true;
+			}
+
+			if (enemies[i].enemyAlive == true)
+			{
+				if (enemies[i].y > 2100) // if the enemy goes beyond a certain point
+				{
+					enemies[i].enemyAlive = false;
+				}	
+			}
+		}
+		enemies[i].Move();
+		enemies[i].draw(ctx);
+
+		console.log("EEENENENENENENENENENEMIES", enemies[0].x, enemies[0].y);
+	}
 	
 	// this is what is used to move to player
 	app.plyr.PlayerMove();
@@ -100,42 +157,8 @@ Game.prototype.update=function()
 	}
 
 
+	
 
-	for (var i=0; i < enemies.length; i++)
-	{
-
-		Spawns();
-		Waves();
-
-		// if the timer is greater than the timerValue from Waves()
-		if (timer >= timerValue)
-		{
-			if (enemies[i].enemyAlive == false)
-			{
-				timer = 0;
-
-				enemies[i] = new Enemy(x,y, rgb(255,255,255));
-				enemies[i].enemyAlive = true;
-			}
-		}
-
-		if (enemies[i].enemyAlive == true)
-		{
-			if (enemies[i].y > 2100) // if the enemy goes beyond a certain point
-			{
-				enemies[i].enemyAlive = false;
-			}	
-		}
-		
-		console.log("1", enemies[0].y);
-		console.log("2", enemies[1].y);
-		console.log("3", enemies[2].y);
-		console.log("4", enemies[3].y);
-		console.log("5", enemies[4].y);
-
-		enemies[i].Move();
-		enemies[i].draw(ctx);
-	}
 
 	/*if(alive === true)
 	{
@@ -173,6 +196,42 @@ Game.prototype.update=function()
 	if(bulletMove === true)
 	{
 		bullet.y -= 10;
+	}
+
+
+	for (var j = 0; j < enemies.length; j++)
+	{
+		for (var i = 1; i < 4; i++)
+		{
+			if (hostage[i].hAlive == true)
+			{
+				if (enemies[j].checkCollision(hostage[i]))
+				{
+					console.log("SUCCESSFUL COLLISION");
+					hostageCount = hostageCount - 1;
+					hostage[i].hAlive = false;
+				}
+				hostage[i].draw(ctx);
+			}
+		}
+	}
+
+	if(hostageCount == 0)
+	{
+		levelEnd = true;
+		console.log("GAME OVER");
+	}
+	if(levelEnd == true)
+	{
+		levelComplete();
+		gameOverTimer--;
+		hostageCount = 3;
+	}
+	if(gameOverTimer == 0)
+	{
+		app.myGame.init();
+		gameOverTimer = 100;
+		levelEnd = false;
 	}
 
 	// draws player
@@ -238,9 +297,10 @@ function levelComplete()
 	ctx.fillStyle = rgb(100,0,100);
 	ctx.font = 'italic 40pt Calibri';
 	ctx.textBaseline = "top";
-	ctx.fillText("Level Complete!",500,300);
+	ctx.fillText("GAME OVER!",100,300);
 	ctx.restore();
 }
+
 
 
 /*function for rgb for convenience*/

@@ -4,7 +4,6 @@
 */
 app = {};
 
-
 /**
 *ctx is context
 */
@@ -12,7 +11,6 @@ var ctx;
 var canvas;
 var x;
 var y;
-
 
 /*
  * This initializes the game and draws the background.
@@ -38,6 +36,7 @@ function main()
 	document.body.style.backgroundImage.width = window.innerWidth;
 	document.body.style.backgroundImage.height = window.innerHeight;
 	document.body.style.backgroundImage
+
 	canvas.height = window.innerHeight;
 	canvas.width = window.innerWidth;
 	ctx = canvas.getContext("2d");
@@ -65,4 +64,4 @@ function clamp(value, min, max)
 	return Math.max(min, Math.min(value, max)); 
 }
 
-		
+	

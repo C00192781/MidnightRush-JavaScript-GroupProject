@@ -8,6 +8,7 @@ var max= 3;
 var speed = 5;
 
 
+
 function Enemy(x, y , colour){
 	this.x = x;
 	this.y = y;
@@ -20,8 +21,27 @@ function Enemy(x, y , colour){
  * @param {var} ctx his param is for the canvas
  */
 Enemy.prototype.draw=function(ctx) {
+
+	//ctx.clearRect(0,0,canvas.width, canvas.height);
 	ctx.fillStyle = this.colour;
-	ctx.fillRect(this.x, this.y, 100, 100);
+	ctx.fillRect(this.x, this.y, this.width, this.height);
+};
+
+
+Enemy.prototype.checkCollision=function(e) 
+{
+	var collides = false;
+
+	// do the bounding boxes overlap?
+	if ((this.x < e.x + e.width) && 
+	(this.x + this.width > e.x) &&
+	(this.y + this.height > e.y) &&
+	(this.y < e.y + e.height) )
+	{
+		collides = true;
+		console.log("true");
+	}
+	return collides;
 };
 
 /** 
@@ -31,6 +51,7 @@ Enemy.prototype.Move=function(e)
 {
 	this.y += speed;
 }
+
 
 
 
