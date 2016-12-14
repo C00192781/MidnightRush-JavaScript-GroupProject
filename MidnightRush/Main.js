@@ -1,5 +1,5 @@
 /**
-* global varaible
+* global variable
 */
 app = {};
 
@@ -32,6 +32,7 @@ function main()
 	canvas = document.createElement("canvas");
 	// adds the canvas element tot the document
 	document.body.appendChild(canvas);
+	// adds in background
 	document.body.style.backgroundImage = "url('floorBackground.png')"; //490 X 805
 	canvas.height = window.innerHeight;
 	canvas.width = window.innerWidth;
