@@ -1,5 +1,3 @@
-
-
 function Goal(x, y , colour){
 	this.x = x;
 	this.y = y;
@@ -8,12 +6,15 @@ function Goal(x, y , colour){
 	this.height = 10;
 }
 
-/** Draws a square.
- * @param {var} ctx his param is for the canvas
- */
+/**Draws a square
+* @param {var} ctx - 
+* @return {number} 
+
+*/
 Goal.prototype.draw=function(ctx) {
 
 	ctx.strokeStyle = this.colour;
 	ctx.strokeRect (this.x, this.y, 10, 10);
 
 };
+

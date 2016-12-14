@@ -1,4 +1,13 @@
-var enemyBool = false;
+// boolean for whether the enemy is alive or not
+var enemyAlive = true;
+var timerValue =0;
+// mimimum and maximum values to be used for spawning purposes
+var min = 1;
+var max= 3;
+// default speed
+var speed = 5;
+
+
 
 function Enemy(x, y , colour){
 	this.x = x;
@@ -19,25 +28,30 @@ Enemy.prototype.draw=function(ctx) {
 };
 
 
-
-Enemy.prototype.Move=function(e) 
-{
-	this.y += 1;
-}
-
 Enemy.prototype.checkCollision=function(e) 
 {
 	var collides = false;
 
-		// do the bounding boxes overlap?
-		if ((this.x < e.x + e.width) && 
-		(this.x + this.width > e.x) &&
-		(this.y + this.height > e.y) &&
-		(this.y < e.y + e.height) )
-		{
-			collides = true;
-			console.log("true");
-		}
-		return collides;
+	// do the bounding boxes overlap?
+	if ((this.x < e.x + e.width) && 
+	(this.x + this.width > e.x) &&
+	(this.y + this.height > e.y) &&
+	(this.y < e.y + e.height) )
+	{
+		collides = true;
+		console.log("true");
+	}
+	return collides;
+};
+
+/** 
+ * Method the make the enemy move
+ */
+Enemy.prototype.Move=function(e) 
+{
+	this.y += speed;
 }
+
+
+
 
