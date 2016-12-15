@@ -1,6 +1,8 @@
 // array of points that the player can move between 
 var points = [];
 
+var score;
+
 function round2(x)
 {
     return Math.ceil(x/2)*2;
@@ -82,6 +84,7 @@ Game.prototype.init=function()
 
 	var hX = 100;
 	var hY = window.innerHeight * Math.abs(0.9); /*(800)*/
+	score = 0;
 
 	for(var i = 1; i < 4; i++)
 	{
@@ -241,6 +244,10 @@ Game.prototype.update=function()
 				if (enemies[j].checkCollision(hostage[i]))
 				{
 					hostageCount = hostageCount - 1;
+					if (score > 0)
+					{
+						score -=50;
+					}
 					hostage[i].hAlive = false;
 				}
 				hostage[i].draw(ctx);
@@ -257,6 +264,11 @@ Game.prototype.update=function()
 			{
 				enemies[i].enemyAlive = false;
 				enemies[i].respawn = true;
+
+				if (score > 0)
+				{
+					score -=50;
+				}
 			}		
 		}
 	}	
@@ -272,6 +284,7 @@ Game.prototype.update=function()
 					enemies[i].enemyAlive = false;
 					console.log("is enemy alive", enemies[i].alive);
 					//hostageCount = hostageCount - 1;
+					score +=50;
 					deathCount++;
 						//hostage[i].hAlive = false;
 				}
@@ -295,9 +308,17 @@ Game.prototype.update=function()
 		levelEnd = true;
 		console.log("GAME OVER");
 	}
+	if (levelEnd == false)
+	{
+		levelScore();
+	}
 	if(levelEnd == true)
 	{
 		GameOver();
+		//score();
+		//levelScore();
+		levelScore();
+
 
 		gameOverTimer--;
 		hostageCount = 3;
@@ -308,6 +329,7 @@ Game.prototype.update=function()
 		gameOverTimer = 100;
 		levelEnd = false;
 	}
+
 	// draws player
 	app.plyr.draw(ctx);
 
@@ -428,6 +450,22 @@ function Spawns()
 	}	
 }
 
+function levelScore()
+{
+	ctx.save();
+	ctx.fillStyle = rgb(100,0,100);
+	ctx.font = 'italic 40pt Calibri';
+	ctx.textBaseline = "top";
+	ctx.fillText(score, window.innerWidth * Math.abs(0.2),window.innerHeight * Math.abs(0.1));
+	ctx.restore();
+
+	ctx.save();
+	ctx.fillStyle = rgb(100,0,100);
+	ctx.font = 'italic 40pt Calibri';
+	ctx.textBaseline = "top";
+	ctx.fillText("Score: ", window.innerWidth * Math.abs(0.05),window.innerHeight * Math.abs(0.1));
+	ctx.restore();
+}
  
 
 function GameOver()
@@ -439,6 +477,9 @@ function GameOver()
 	ctx.fillText("gameOver",window.innerWidth * Math.abs(0.05),window.innerHeight * Math.abs(0.5));
 	ctx.restore();
 }
+
+
+
 
 
 /*function for rgb for convenience*/
