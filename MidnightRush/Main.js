@@ -32,7 +32,8 @@ function main()
 	// adds the canvas element tot the document
 	document.body.appendChild(canvas);
 	// adds in background
-	document.body.style.backgroundImage = "url('floorBackground.png')"; //490 X 805
+	document.body.style.backgroundImage = "url('floorBackground.png')"; 
+	//Sets the background width and height 
 	document.body.style.backgroundImage.width = window.innerWidth;
 	document.body.style.backgroundImage.height = window.innerHeight;
 	document.body.style.backgroundImage;
@@ -42,7 +43,7 @@ function main()
 	canvas.width = window.innerWidth;
 	ctx = canvas.getContext("2d");
 
-
+	//Initialises the game
 	app.myGame = new Game();
 	app.myGame.init();
 	app.myGame.update();

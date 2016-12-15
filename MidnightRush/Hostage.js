@@ -1,5 +1,7 @@
+//Initially sets the hostage to be alive 
 var hAlive = true;
 
+//Creates a function to create a player
 function Hostage(x, y , colour)
 {
 	this.x = x;
@@ -16,6 +18,7 @@ function Hostage(x, y , colour)
 */
 Hostage.prototype.draw=function(ctx) 
 {
+	//Only draws the hostage if they are alive
 	if(hAlive == true)
 	{
 		ctx.fillStyle = this.colour;

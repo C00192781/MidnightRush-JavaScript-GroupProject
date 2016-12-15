@@ -45,7 +45,7 @@ TouchTest.prototype.Move=function(e)
 
 	touches = e.touches; 
 
-///SWIPE RIGHT
+	//SWIPE RIGHT
 	if (mouse.x <= touches[0].clientX && mouse.y >= touches[0].clientY)
 	{
 		app.plyr.targetLeft = false;
@@ -53,11 +53,12 @@ TouchTest.prototype.Move=function(e)
 		if (app.plyr.x < points[2])
 		{
 			app.plyr.speed = round2(window.innerWidth * (0.02));
+			console.log("speedeeeeeeeeeed", app.plyr.speed);
 		}
 		
 	}  
 
-///SWIPE LEFT
+	//SWIPE LEFT
 	else if (mouse.x >= touches[0].clientX && mouse.y >= touches[0].clientY)
 	{
 		app.plyr.targetLeft = true;
@@ -65,6 +66,7 @@ TouchTest.prototype.Move=function(e)
 		if (app.plyr.x > points[0])
 		{
 			app.plyr.speed = -(round2(window.innerWidth * (0.02)));
+			console.log("speedeeeeeeeeeed", app.plyr.speed);
 		}
 	}	
 }

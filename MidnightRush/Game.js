@@ -8,6 +8,8 @@ function round2(x)
     return Math.ceil(x/2)*2;
 }
 
+/*Each object in the game is assigned one of three positions 
+  on screen that are based on a fraction of the size of the screen*/
 points[0] = round2(window.innerWidth * Math.abs(0.1));
 points[1] = round2(window.innerWidth * Math.abs(0.5));
 points[2] = round2(window.innerWidth * Math.abs(0.9));
@@ -53,9 +55,6 @@ function Game(){
  */
 Game.prototype.init=function()
 {
-
-	//waves = new Waves();
-	//waves.Wave1();
 	timer = 0;
 	enemies.length = 100;
 
@@ -65,7 +64,6 @@ Game.prototype.init=function()
 		enemies[i] = new Enemy(3000, 1111, rgb(255,255,255));
 		enemies[i].respawn = false;
 		enemies[i].enemyAlive = true;
-		//waves.timer++;
 		timer++;
 	}
 
@@ -78,10 +76,13 @@ Game.prototype.init=function()
 	app.plyr = new Player(xP,yP);
 	app.plyr.draw(ctx);
 
+	//Creates a new bullet that is assigned to the player position (Including an offset)
+	bullet = new Bullet(xP + 25, yP + 5, rgb(128,128,128));
 
-	bullet = new Bullet(xP + 25, yP + 5, rgb(255,255,255));
-
-
+	/*  Gives the Hostages different position 
+	 *  Their y remains the same for all three
+	 *  their x is split into thirds across the screen 
+	 */
 	var hX = 100;
 	var hY = window.innerHeight * Math.abs(0.9); /*(800)*/
 	score = 0;
@@ -119,6 +120,9 @@ Game.prototype.update=function()
 
 	Spawns();
 
+	/* Increases the waves in the game after
+	*  a certain amount of deaths
+	*/
 	if (currentWave == 1)
 	{
 		if (deathCount <= 5)
@@ -147,12 +151,12 @@ Game.prototype.update=function()
 		if (deathCount <= 100)
 		{
 			Wave3();
-			//currentWave = 3;
 		}
 	}
 	
 	timer++;
 	
+	//Draws multiple enemies on screen
 	for (var i=0; i < enemies.length; i++)
 	{
 		// if the timer is greater than the timerValue from Waves()
@@ -172,7 +176,6 @@ Game.prototype.update=function()
 				if (enemies[i].y > (window.innerHeight) + 100) // if the enemy goes beyond a certain point
 				{
 					enemies[i].respawn = true;
-					//enemies[i].enemyAlive = true;
 				}	
 			}
 		}
@@ -209,6 +212,10 @@ Game.prototype.update=function()
 	///////////////////////////
 	//Bullet
 	//////////////////////////
+	/* 
+	*  The bullet will become alive when 
+	*  the player clicks the left mouse button
+	*/
 	if(bulletAlive === true)
 	{
 		bullet.draw(ctx);
@@ -222,19 +229,23 @@ Game.prototype.update=function()
 			bullet.x = app.plyr.x + 25;
 		}
 	}
-
+	//The bullet becomes false if it reaches the top of the screen 
 	if(bulletAlive === false)
 	{
 		bullet.y = app.plyr.y + 5;
 		bullet.x = app.plyr.x + 25;
 	}
-
+	// The bullet is given a speed at which to move up the screen
 	if(bulletMove === true)
 	{
 		bullet.y -= 20;
 	}
 
-
+	/* 
+	* Checks if any of the hostages have collided 
+	* with any of the enemeies 
+	* in which case the hostage will die
+	*/
 	for (var j = 0; j < enemies.length; j++)
 	{
 		for (var i = 1; i < 4; i++)
@@ -255,7 +266,11 @@ Game.prototype.update=function()
 		}
 	}
 
-	
+	/* 
+	* Checks if the player have collided 
+	* with any of the enemeies 
+	* in which case the players score will decrease 
+	*/
 	for (var i = 0; i < enemies.length; i++)
 	{
 		if (enemies[i].enemyAlive == true)
@@ -273,6 +288,11 @@ Game.prototype.update=function()
 		}
 	}	
 
+	/* 
+	* Checks if the bulets have collided 
+	* with any of the enemeies 
+	* in which case the enemy will die
+	*/
 	for (var i = 0; i < enemies.length; i++)
 	{
 		if ((enemies[i].enemyAlive) == true && (enemies[i].y > -50))
@@ -283,10 +303,8 @@ Game.prototype.update=function()
 				{
 					enemies[i].enemyAlive = false;
 					console.log("is enemy alive", enemies[i].alive);
-					//hostageCount = hostageCount - 1;
 					score +=50;
 					deathCount++;
-						//hostage[i].hAlive = false;
 				}
 			}
 			
@@ -294,7 +312,7 @@ Game.prototype.update=function()
 			
 	}
 
-	
+	//Indicates to the player what wave they are currently on
 	ctx.save();
 	ctx.fillStyle = rgb(100,0,100);
 	ctx.font = 'italic 40pt Calibri';
@@ -302,7 +320,7 @@ Game.prototype.update=function()
 	ctx.fillText("Wave: ", window.innerWidth * Math.abs(0.7),window.innerHeight * Math.abs(0.1));
 	ctx.restore();
 
-
+	// If all the hostages have been killed the game will end 
 	if(hostageCount == 0)
 	{
 		levelEnd = true;
@@ -315,14 +333,13 @@ Game.prototype.update=function()
 	if(levelEnd == true)
 	{
 		GameOver();
-		//score();
-		//levelScore();
 		levelScore();
 
 
 		gameOverTimer--;
 		hostageCount = 3;
 	}
+	//This resets the game following the gameover
 	if(gameOverTimer == 0)
 	{
 		app.myGame.init();
@@ -340,6 +357,7 @@ Game.prototype.update=function()
 
 function Wave1() 
 {
+	//Controlls the waves for the game which includes the time between each wave
 	randomWave = Math.floor(Math.random() * (max - min + 1)) + min;
 	if (randomWave == 1)
 	{
@@ -422,11 +440,12 @@ function Wave3()
 }
 
 
-
 /*
- * A function used for the randomly spawning 
- * enemies between 3 different positions.
- */
+* Spawns enemies
+* @param {var} null  
+* @return {number} 
+*/
+
 function Spawns()
 {
 	randomSpawn = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -450,6 +469,7 @@ function Spawns()
 	}	
 }
 
+// Indicates to the player what their score is
 function levelScore()
 {
 	ctx.save();
@@ -467,7 +487,7 @@ function levelScore()
 	ctx.restore();
 }
  
-
+//When the player has lost they will be shown a game over text
 function GameOver()
 {
 	ctx.save();

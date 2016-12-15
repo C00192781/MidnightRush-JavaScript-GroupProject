@@ -1,4 +1,4 @@
-
+// Creates a bullet class with a size and position
 function Bullet(x, y , colour)
 {
 	this.x = x;
@@ -8,17 +8,17 @@ function Bullet(x, y , colour)
 	this.height = 10;
 }
 
-/**Drtaws a square
+/**Draws a square
 * @param {var} ctx - 
 * @return {number} 
 
 */
 Bullet.prototype.draw=function(ctx) 
 {
-	ctx.strokeStyle = this.colour;
-	ctx.strokeRect(this.x, this.y, 10, 10);	
+	ctx.fillStyle = this.colour;
+	ctx.fillRect(this.x, this.y, 10, 10);	
 }
-
+// Checks if there is any collision between the bullet and an object
 Bullet.prototype.CheckBulletCollision = function(e)
 {
 	var bulletCollides = false;
@@ -28,6 +28,7 @@ Bullet.prototype.CheckBulletCollision = function(e)
 	   (this.y + this.height > e.y) &&
 	   (this.y < e.y + e.height))
 	{
+		//Outputs a message to check if collision was successful
 		console.log("Successful Bullet Collision");
 		bulletCollides = true;
 	} 

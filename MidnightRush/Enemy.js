@@ -9,7 +9,7 @@ var max= 3;
 var speed = 5;
 
 
-
+//Creates an enemy class with a size and position
 function Enemy(x, y , colour){
 	this.x = x;
 	this.y = y;
@@ -28,7 +28,7 @@ Enemy.prototype.draw=function(ctx) {
 	ctx.fillRect(this.x, this.y, this.width, this.height);
 };
 
-
+// Checks if there is any collision between the enemy and an object
 Enemy.prototype.checkCollision=function(e) 
 {
 	var collides = false;
