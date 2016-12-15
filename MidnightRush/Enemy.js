@@ -1,6 +1,7 @@
 // boolean for whether the enemy is alive or not
+var respawn = true;
 var enemyAlive = true;
-var timerValue =0;
+var timerValue = 0;
 // mimimum and maximum values to be used for spawning purposes
 var min = 1;
 var max= 3;

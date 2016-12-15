@@ -35,11 +35,13 @@ function main()
 	document.body.style.backgroundImage = "url('floorBackground.png')"; //490 X 805
 	document.body.style.backgroundImage.width = window.innerWidth;
 	document.body.style.backgroundImage.height = window.innerHeight;
-	document.body.style.backgroundImage
+	document.body.style.backgroundImage;
+
 
 	canvas.height = window.innerHeight;
 	canvas.width = window.innerWidth;
 	ctx = canvas.getContext("2d");
+
 
 	app.myGame = new Game();
 	app.myGame.init();

@@ -26,6 +26,15 @@ TouchTest.prototype.onTouchStart=function(e)
 }
 
 
+function roundToTwo(num) {    
+    return +(Math.round(num + "e+2")  + "e-2");
+}
+
+function round2(x)
+{
+    return Math.ceil(x/2)*2;
+}
+
 // This moves the player, based on swipes
 TouchTest.prototype.Move=function(e)
 {
@@ -41,9 +50,9 @@ TouchTest.prototype.Move=function(e)
 	{
 		app.plyr.targetLeft = false;
 		app.plyr.targetRight = true;
-		if (app.plyr.x != points[2])
+		if (app.plyr.x < points[2])
 		{
-			app.plyr.speed = 15;
+			app.plyr.speed = round2(window.innerWidth * (0.02));
 		}
 		
 	}  
@@ -53,10 +62,12 @@ TouchTest.prototype.Move=function(e)
 	{
 		app.plyr.targetLeft = true;
 		app.plyr.targetRight = false;
-		if (app.plyr.x != points[0])
+		if (app.plyr.x > points[0])
 		{
-			app.plyr.speed = -15;
+			app.plyr.speed = -(round2(window.innerWidth * (0.02)));
 		}
 	}	
 }
+
+
 
