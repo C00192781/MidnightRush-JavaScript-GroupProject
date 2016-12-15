@@ -16,6 +16,8 @@ function Player(x, y , colour)
 	this.speed = 0;
 	this.targetLeft = false;
 	this.targetRight = false;
+	this.playerHealth = 100;
+	this.playerAlive = true;
 }
 
 /**Drtaws a square
@@ -55,6 +57,8 @@ function keyDownHandler(e)
  	app.player.draw(ctx);
 }
 
+
+
 Player.prototype.PlayerMove=function(e) 
 {
 	this.x += this.speed;
@@ -78,6 +82,19 @@ Player.prototype.CheckCollision = function(e)
 	return collides;
 }
 
+Player.prototype.PlayerHealth = function(e)
+{
+	ctx.fillStyle="#FF0000";
+	ctx.fillRect(0,0,(playerHealth/100)*140,25);
+	//For losing health
+	playerHealth-=20;
+	if (playerHealth <= 0)
+	{
+		playerAlive = false;
+	} 
+
+	
+}
 
 
 
