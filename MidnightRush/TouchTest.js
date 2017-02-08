@@ -1,7 +1,9 @@
 app = [];
 
 var isTouch = 'ontouchstart' in window;
-
+var bulletCount = 0;
+var gamePlayMusic = new Audio('Audio/SweetDreamsInst.ogg');
+var gunShoot = new Audio('Audio/gunShoot.ogg');
 
 function TouchTest(){
 	var ctx;
@@ -18,11 +20,59 @@ TouchTest.prototype.is_touch_device=function()
 TouchTest.prototype.onTouchStart=function(e)
 {
     touches = e.touches; 
+    touchXPos = e.touches[0].clientX;
+    touchYPos = e.touches[0].clientY;
    //print outs out the x and y co-ordinates
     console.log("CLICK");
     console.log("X = " + touches[0].clientX,"Y = " + touches[0].clientY);
-  	bulletMove = true;
-  	bulletAlive = true;
+
+  	 if (isMenu === true)
+    {
+	    	//Play Button
+	    if ((touches[0].clientX >= 200 &&
+	    	touches[0].clientX <= 420 &&
+	    	touches[0].clientY >= 530 &&
+	    	touches[0].clientY <= 585) && isGame === false && isMenu === true)
+	    {
+	    	console.log("Play Button Pressed");
+	    	isMenu = false;
+	    	menuMusic.pause();
+	    	isGame = true;
+
+	    	//Initialises the game
+			app.myGame = new Game();
+			app.myGame.init();
+			app.myGame.update();
+			// adds in background
+			document.body.style.backgroundImage = "url('floorBackground.png')"; 
+	    }
+
+	    //Quit Button
+	    if ((touches[0].clientX >= 210 &&
+	    	touches[0].clientX <= 400 &&
+	    	touches[0].clientY >= 730 &&
+	    	touches[0].clientY <= 790) && isGame === false && isMenu === true)
+	    {
+	    	console.log("Quit Button Pressed");
+
+	    	if (confirm("Close Window?")) {
+	    		close();
+	 		 }
+	    }
+    }
+    if(isGame === true)
+    {
+    	bulletCount++;
+    	if(bulletCount >= 2)
+    	{
+    		gunShoot.play();
+    		bulletMove = true;
+  			bulletAlive = true;
+  			bulletCount = 0;
+  		}
+  		isMenu = false;
+  		gamePlayMusic.play();
+    }
 }
 
 
@@ -48,6 +98,7 @@ TouchTest.prototype.Move=function(e)
 	//SWIPE RIGHT
 	if (mouse.x <= touches[0].clientX && mouse.y >= touches[0].clientY)
 	{
+		bulletCount = 0;
 		app.plyr.targetLeft = false;
 		app.plyr.targetRight = true;
 		if (app.plyr.x < points[2])
@@ -61,6 +112,7 @@ TouchTest.prototype.Move=function(e)
 	//SWIPE LEFT
 	else if (mouse.x >= touches[0].clientX && mouse.y >= touches[0].clientY)
 	{
+		bulletCount = 0;
 		app.plyr.targetLeft = true;
 		app.plyr.targetRight = false;
 		if (app.plyr.x > points[0])
@@ -70,6 +122,4 @@ TouchTest.prototype.Move=function(e)
 		}
 	}	
 }
-
-
 

@@ -8,6 +8,13 @@ var max= 3;
 // default speed
 var speed = 5;
 
+//Loads in the player image
+var enemyImg = new Image();   // Create new img element
+enemyImg.addEventListener("load", function() 
+{
+}, false);
+enemyImg.src = 'enemybat.png'; // Set source path
+
 
 //Creates an enemy class with a size and position
 function Enemy(x, y , colour){
@@ -24,8 +31,9 @@ function Enemy(x, y , colour){
 Enemy.prototype.draw=function(ctx) {
 
 	//ctx.clearRect(0,0,canvas.width, canvas.height);
-	ctx.fillStyle = this.colour;
-	ctx.fillRect(this.x, this.y, this.width, this.height);
+	//ctx.fillStyle = this.colour;
+	//ctx.fillRect(this.x, this.y, this.width, this.height);
+	ctx.drawImage(enemyImg, this.x, this.y);	
 };
 
 // Checks if there is any collision between the enemy and an object

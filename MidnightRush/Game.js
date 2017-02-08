@@ -42,6 +42,8 @@ var hAlive = true;
 var deathCount = 0;
 var currentWave = 1;
 
+var hostageDeath = new Audio('Audio/hostageDeath.ogg');
+
 
 function Game(){
 	
@@ -260,6 +262,7 @@ Game.prototype.update=function()
 						score -=50;
 					}
 					hostage[i].hAlive = false;
+					hostageDeath.play();
 				}
 				hostage[i].draw(ctx);
 			}
