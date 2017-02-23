@@ -16,11 +16,31 @@ var isMenu = true;
 var isGame = false;
 var menuMusic = new Audio('Audio/MenuMusic.ogg');
 
+
+var ws = new WebSocket("ws://localhost:8080/wstest");
+		//called when the websocket is opened
+
+var gameData = {};
+gameData.type = "updateState";
+gameData.data = {"x": 0, "y": 0};
+
+var message = {};
+var JSONmessage = {};
+
+
 /*
  * This initializes the game and draws the background.
  */
 function main()
 {
+
+	message.type = 'type';
+	message.data = 'data';
+
+	JSONmessage = JSON.stringify(message);
+	JSONmessage = JSON.parse(JSONmessage);
+
+
 	var tTest = new TouchTest();
 	tTest.is_touch_device();
 
@@ -29,7 +49,10 @@ function main()
 
 	// listener event for detecting a touch event
 	document.addEventListener("touchstart", tTest.onTouchStart);
+	var touchStart = document.getElementById("touchstart");
+
 	document.addEventListener("touchmove", tTest.Move);
+	var touchMove = document.getElementById("touchmove");
 
 	//creates a new canvas element
 	canvas = document.createElement("canvas");
@@ -48,10 +71,14 @@ function main()
 
 	Update();
 
-	//Initialises the game
-	//app.myGame = new Game();
-	//app.myGame.init();
-	//app.myGame.update();
+
+	function join()
+	{
+		console.log("Join, Main");
+		message.type="join";
+		message = JSON.stringify(message);
+		ws.send(message);
+	}
 }
 
 
@@ -77,8 +104,27 @@ function Update()
 		// adds in background
 		document.body.style.backgroundImage = "url('floorBackground.png')"; 
 	}
-
 }
+
+function updatePlayer2(msg)
+{
+	app.ply2.speed = msg.data[0];
+	console.log(app.ply2.speed);
+}
+// when a client gets a messages, this is called
+ws.onmessage = function (evt)
+{
+	console.log(evt.data);
+	var msg=JSON.parse(evt.data);
+	
+	if(msg.type==="updatePosition")
+   {
+    	updatePlayer2(msg); 
+    	console.log(msg);  	
+    	console.log("the type is update");	
+   }
+}
+
 
 /*function for rgb for convenience*/
 function rgb(r, g, b) 

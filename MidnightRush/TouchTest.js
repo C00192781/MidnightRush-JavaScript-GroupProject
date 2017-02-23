@@ -1,9 +1,13 @@
-app = [];
+//app = [];
+
+//var message = {};
 
 var isTouch = 'ontouchstart' in window;
 var bulletCount = 0;
 var gamePlayMusic = new Audio('Audio/SweetDreamsInst.ogg');
 var gunShoot = new Audio('Audio/gunShoot.ogg');
+
+var mes = {};
 
 function TouchTest(){
 	var ctx;
@@ -73,6 +77,8 @@ TouchTest.prototype.onTouchStart=function(e)
   		isMenu = false;
   		gamePlayMusic.play();
     }
+
+    makePlayerMessage(app.plyr.x, app.plyr.y);
 }
 
 
@@ -94,6 +100,7 @@ TouchTest.prototype.Move=function(e)
 	mouse.y = touches[0].clientY - mouse.y;
 
 	touches = e.touches; 
+	makePlayerMessage(speed);
 
 	//SWIPE RIGHT
 	if (mouse.x <= touches[0].clientX && mouse.y >= touches[0].clientY)
@@ -104,9 +111,10 @@ TouchTest.prototype.Move=function(e)
 		if (app.plyr.x < points[2])
 		{
 			app.plyr.speed = round2(window.innerWidth * (0.02));
-			console.log("speedeeeeeeeeeed", app.plyr.speed);
+			console.log("speed", app.plyr.speed);
+			makePlayerMessage(app.plyr.x, app.plyr.y);
 		}
-		
+		makePlayerMessage(speed);
 	}  
 
 	//SWIPE LEFT
@@ -118,8 +126,20 @@ TouchTest.prototype.Move=function(e)
 		if (app.plyr.x > points[0])
 		{
 			app.plyr.speed = -(round2(window.innerWidth * (0.02)));
-			console.log("speedeeeeeeeeeed", app.plyr.speed);
+			console.log("speed", app.plyr.speed);
+			makePlayerMessage(speed);
 		}
-	}	
+		makePlayerMessage(speed);
+	}
+	makePlayerMessage(speed);	
+}
+
+// make message containing x and y positions of Player 1
+function makePlayerMessage(xPlayer, yPlayer)
+{
+	message.data = {"speed": app.plyr.speed};
+	message.type = "updatePosition";
+	mes = JSON.stringify(message);
+	ws.send(mes);
 }
 

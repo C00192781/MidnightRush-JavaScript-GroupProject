@@ -1,6 +1,7 @@
 // array of points that the player can move between 
 var points = [];
 
+
 var score;
 
 function round2(x)
@@ -46,7 +47,11 @@ var hostageDeath = new Audio('Audio/hostageDeath.ogg');
 
 
 function Game(){
-	
+	//this.updatePlayer2 = function(msg)
+	//{
+		//app.ply2.x = msg.data.x;
+		//app.ply2.y = msg.data.y;
+	//}
 }
 
 /*
@@ -76,7 +81,9 @@ Game.prototype.init=function()
 
 	// initialising player
 	app.plyr = new Player(xP,yP);
+	app.ply2 = new Player(xP,yP);
 	app.plyr.draw(ctx);
+	app.plyr2.draw(ctx);
 
 	//Creates a new bullet that is assigned to the player position (Including an offset)
 	bullet = new Bullet(xP + 25, yP + 5, rgb(128,128,128));
@@ -500,6 +507,9 @@ function GameOver()
 	ctx.fillText("gameOver",window.innerWidth * Math.abs(0.05),window.innerHeight * Math.abs(0.5));
 	ctx.restore();
 }
+
+
+
 
 
 

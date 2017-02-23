@@ -9,8 +9,11 @@ img.addEventListener("load", function()
 img.src = 'player.png'; // Set source path
 
 
+
 function Player(x, y , colour)
 {
+
+
 	this.x = x;
 	this.y = y;
 	this.width = 100; //50
@@ -20,6 +23,24 @@ function Player(x, y , colour)
 	this.targetRight = false;
 	this.playerHealth = 100;
 	this.playerAlive = true;
+	this.getX =function()
+	{
+		return this.x;
+	}
+	this.getY =function()
+	{
+		return this.y;
+	}
+	this.getWidth =function()
+	{
+		return this.width;
+	}
+	this.getHeight =function()
+	{
+		return this.height;
+	}
+
+
 }
 
 /**Drtaws a square
@@ -63,6 +84,7 @@ function keyDownHandler(e)
 Player.prototype.PlayerMove=function(e) 
 {
 	this.x += this.speed;
+
 }
 
 // Checks if there is any collision between the player and an object
@@ -92,12 +114,5 @@ Player.prototype.PlayerHealth = function(e)
 	if (playerHealth <= 0)
 	{
 		playerAlive = false;
-	} 
-
-	
+	} 	
 }
-
-
-
-
-
